@@ -30,10 +30,7 @@ label_dock:
   movable: true
   show: true
 label_flags: null
-labels:
-- cystic_duct
-- hepatic_duct
-- gallbladder
+labels: null
 logger_level: info
 shape_color: auto
 shape_dock:
@@ -65,15 +62,15 @@ shortcuts:
   fit_window: Ctrl+F
   increase_blend:
   - O
-  open: Ctrl+O
+  open: null
   open_dir: Ctrl+D
   open_next:
   - Right
   - Alt+Right
-  open_nir: Ctrl+I
   open_prev:
   - Left
   - Alt+Left
+  open_seg: Ctrl+O
   quit: Ctrl+Q
   save: Ctrl+S
   save_as: Ctrl+Shift+S
@@ -93,5 +90,5 @@ shortcuts:
 show_label_text_field: true
 sort_labels: true
 store_data: false
-validate_label: exact
-version: 5.0.3
+validate_label: null
+version: 5.0.1

@@ -40,10 +40,8 @@ def main():
              'recognized as file, else as directory)'
     )
     parser.add_argument(
-        '--auxillary',
-        '-A',
-        '-a',
-        help='auxillary input directory (containing NIR images for overlay)'
+        '--overlay',
+        help='directory containing overlay images'
     )
     default_config_file = os.path.join(os.path.expanduser('~'), '.labelmerc')
     parser.add_argument(
@@ -154,7 +152,7 @@ def main():
     reset_config = config_from_args.pop('reset_config')
     filename = config_from_args.pop('filename')
     output = config_from_args.pop('output')
-    auxillary = config_from_args.pop('auxillary')
+    overlay = config_from_args.pop('overlay')
     config_file_or_yaml = config_from_args.pop('config')
     config = get_config(config_file_or_yaml, config_from_args)
 
@@ -166,7 +164,7 @@ def main():
 
     output_file = None
     output_dir = None
-    auxillary_dir = None
+    overlay_dir = None
 
     if output is not None:
         if output.endswith('.json'):
@@ -174,11 +172,11 @@ def main():
         else:
             output_dir = output
 
-    if auxillary is not None:
-        if os.path.isdir(auxillary):
-            auxillary_dir = auxillary
+    if overlay is not None:
+        if os.path.isdir(overlay):
+            overlay_dir = overlay
         else:
-            logger.error('--auxilliary must be a valid directory.')
+            logger.error('--overlay must be a valid directory.')
             sys.exit(1)
 
     translator = QtCore.QTranslator()
@@ -195,7 +193,7 @@ def main():
         filename=filename,
         output_file=output_file,
         output_dir=output_dir,
-        auxillary_dir=auxillary_dir,
+        overlay_dir=overlay_dir,
     )
 
     if reset_config:

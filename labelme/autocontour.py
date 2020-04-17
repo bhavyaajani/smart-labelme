@@ -45,7 +45,7 @@ class AutoContour(object):
     @property
     def minContourArea(self):
         assert self.img is not None
-        return (self.img.shape[0] * self.img.shape[1]) / 20
+        return (self.img.shape[0] * self.img.shape[1]) / 50
 
     @property
     def isShapeRestorable(self):
@@ -164,9 +164,9 @@ class AutoContour(object):
                 pos = self.canvas.event_point_in_image(ev)
                 rf = self.SCALE
                 if self.mask_background:
-                    cv2.circle(self.mask, (int(rf*pos.x()), int(rf*pos.y())), 5, 0, -1)
+                    cv2.circle(self.mask, (int(rf*pos.x()), int(rf*pos.y())), 2, 0, -1)
                 else:
-                    cv2.circle(self.mask, (int(rf*pos.x()), int(rf*pos.y())), 5, 1, -1)
+                    cv2.circle(self.mask, (int(rf*pos.x()), int(rf*pos.y())), 2, 1, -1)
 
                 self.canvas.update()
                 return

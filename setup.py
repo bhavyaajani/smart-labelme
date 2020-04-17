@@ -123,6 +123,7 @@ def main():
                 'smart_labelme2mask=labelme.cli.labelme2mask:main',
                 'smart_labelme_draw_label_png=labelme.cli.draw_label_png:main',
                 'smart_labelme_json_to_dataset=labelme.cli.json_to_dataset:main',
+                'smart_labelme_video2frames=labelme.cli.video2frames:main',
             ],
         },
     )

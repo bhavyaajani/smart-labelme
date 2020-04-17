@@ -4,6 +4,7 @@ import functools
 import os
 import os.path as osp
 import re
+import sys
 
 import imgviz
 from qtpy import QtCore
@@ -29,7 +30,7 @@ from labelme.widgets import ToolBar
 from labelme.widgets import UniqueLabelQListWidget
 from labelme.widgets import ZoomWidget
 
-from labelme.tracker import Tracker
+from labelme.tracker2 import Tracker
 
 here = osp.dirname(osp.abspath(__file__))
 # FIXME
@@ -57,7 +58,7 @@ class MainWindow(QtWidgets.QMainWindow):
         output=None,
         output_file=None,
         output_dir=None,
-        auxillary_dir=None,
+        overlay_dir=None,
     ):
         if output is not None:
             logger.warning(
@@ -198,10 +199,10 @@ class MainWindow(QtWidgets.QMainWindow):
                        shortcuts['open'],
                        'open',
                        self.tr('Open image or label file'))
-        opendir = action(self.tr('&Open WL DIR'), self.openDirDialog,
-                         shortcuts['open_dir'], 'open', self.tr(u'Open Dir containing whitelight images'))
-        opennir = action(self.tr('&Open NIR DIR'), self.openNIRDirDialog,
-                         shortcuts['open_nir'], 'open', self.tr(u'Open Dir containing NIR images'), enabled=False,
+        opendir = action(self.tr('&Open DIR'), self.openDirDialog,
+                         shortcuts['open_dir'], 'open', self.tr(u'Open Dir containing images'))
+        openseg = action(self.tr('&Open Overlay DIR'), self.openOverlayDirDialog,
+                         shortcuts['open_seg'], 'open', self.tr(u'Open Dir containing overlay images'), enabled=False,
                          )
         openNextImg = action(
             self.tr('&Next Image'),
@@ -483,10 +484,10 @@ class MainWindow(QtWidgets.QMainWindow):
             zoom=zoom, zoomIn=zoomIn, zoomOut=zoomOut, zoomOrg=zoomOrg,
             fitWindow=fitWindow, fitWidth=fitWidth,
             zoomActions=zoomActions,
-            openNextImg=openNextImg, openPrevImg=openPrevImg, opennir=opennir,
+            openNextImg=openNextImg, openPrevImg=openPrevImg, openseg=openseg,
             increase_blend=increase_blend, decrease_blend=decrease_blend,
             toggle_tracker=toggle_tracker,
-            fileMenuActions=(opendir, opennir, save, saveAs, close, quit),
+            fileMenuActions=(opendir, openseg, save, saveAs, close, quit),
             tool=(),
             # XXX: need to add some actions here to activate the shortcut
             editMenu=(
@@ -552,7 +553,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 openNextImg,
                 openPrevImg,
                 opendir,
-                opennir,
+                openseg,
                 self.menus.recentFiles,
                 save,
                 saveAs,
@@ -608,13 +609,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions.tool = (
             #open_,
             opendir,
-            opennir,
+            openseg,
             openNextImg,
             openPrevImg,
             save,
             deleteFile,
             None,
             createMode,
+            createAutoContourMode,
             editMode,
             #copy,
             delete,
@@ -639,15 +641,11 @@ class MainWindow(QtWidgets.QMainWindow):
             )
         self.output_file = output_file
         self.output_dir = output_dir
-        self.auxillary_dir = auxillary_dir
+        self.overlay_dir = overlay_dir
 
-        if self.auxillary_dir is not None and osp.isdir(self.auxillary_dir):
+        if self.overlay_dir is not None and osp.isdir(self.overlay_dir):
             self.actions.increase_blend.setEnabled(True)
             self.actions.decrease_blend.setEnabled(True)
-
-        self.auxillary_color_table = []
-        for i in range(256):
-            self.auxillary_color_table.append(QtGui.qRgb(0, 0, i))
 
         # Application state.
         self.image = QtGui.QImage()
@@ -1404,10 +1402,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.filename = filename
         aux_image = QtGui.QImage()
 
-        if self.auxillary_dir is not None:
+        if self.overlay_dir is not None:
             fn = os.path.basename(filename)
-            ir_file = fn.replace('WL','IR')
-            ir_file = os.path.join(self.auxillary_dir,ir_file)
+            ir_file = os.path.join(self.overlay_dir,fn)
             if not QtCore.QFile.exists(ir_file):
                 self.errorMessage(
                     self.tr('Error opening file'),
@@ -1415,8 +1412,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
             else:
                 aux_image = QtGui.QImage(ir_file)
-                aux_image = aux_image.convertToFormat(QtGui.QImage.Format_Indexed8)
-                aux_image.setColorTable(self.auxillary_color_table)
+                #aux_image = aux_image.convertToFormat(QtGui.QImage.Format_Indexed8)
+                #aux_image.setColorTable(self.auxillary_color_table)
 
         #if self._config['keep_prev']:
         if self.tracker_dict:
@@ -1808,13 +1805,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.importDirImages(targetDirPath)
 
 
-    def openNIRDirDialog(self, _value=False, dirpath=None):
+    def openOverlayDirDialog(self, _value=False, dirpath=None):
         if not self.mayContinue():
             return
 
         defaultOpenDirPath = dirpath if dirpath else '.'
-        if self.auxillary_dir and osp.exists(self.auxillary_dir):
-            defaultOpenDirPath = self.auxillary_dir
+        if self.overlay_dir and osp.exists(self.overlay_dir):
+            defaultOpenDirPath = self.overlay_dir
         else:
             defaultOpenDirPath = osp.dirname(self.filename) \
                 if self.filename else '.'
@@ -1826,7 +1823,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QFileDialog.ShowDirsOnly |
             QtWidgets.QFileDialog.DontResolveSymlinks))
 
-        self.auxillary_dir = targetDirPath
+        self.overlay_dir = targetDirPath
 
         self.actions.increase_blend.setEnabled(True)
         self.actions.decrease_blend.setEnabled(True)
@@ -1848,7 +1845,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.actions.openNextImg.setEnabled(True)
         self.actions.openPrevImg.setEnabled(True)
-        self.actions.opennir.setEnabled(True)
+        self.actions.openseg.setEnabled(True)
         self.actions.toggle_tracker.setEnabled(True)
 
         self.lastOpenDir = dirpath
@@ -1902,10 +1899,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileListWidget.repaint()
 
     def getFileIndex(self,file):
-        token = file.split('image.')[1]#image.token.WL.png
-        token = token.split('.')[0]
-        #print(token)
-        return int(token)
+        regex = re.compile(r'\d+')
+        idx = regex.findall(file)
+        
+        return float(idx[0])
 
     def scanAllImages(self, folderPath, pattern = None):
         extensions = ['.%s' % fmt.data().decode("ascii").lower()
@@ -1919,7 +1916,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 relativePath = osp.join(folderPath, file)
                 if pattern and pattern not in relativePath:
                     continue
-                images.append(relativePath)
+                if re.search(r'\d+', file):
+                    images.append(relativePath)
+                else:
+                    self.errorMessage('Input files do not have \d+ regex','Failed to load some images!')
+                    return []
 
         images = sorted(images, key = self.getFileIndex)
         return images
