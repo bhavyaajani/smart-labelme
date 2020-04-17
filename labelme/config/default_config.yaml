@@ -1,0 +1,97 @@
+auto_save: true
+canvas:
+  double_click: close
+default_shape_color: null
+display_label_popup: true
+epsilon: 10.0
+file_dock:
+  closable: true
+  floatable: true
+  movable: true
+  show: true
+file_search: null
+fit_to_content:
+  column: true
+  row: false
+flag_dock:
+  closable: true
+  floatable: true
+  movable: true
+  show: true
+flags: null
+image_skip: 15
+keep_prev: false
+keep_prev_scale: false
+label_colors: null
+label_completion: startswith
+label_dock:
+  closable: true
+  floatable: true
+  movable: true
+  show: true
+label_flags: null
+labels:
+- cystic_duct
+- hepatic_duct
+- gallbladder
+logger_level: info
+shape_color: auto
+shape_dock:
+  closable: true
+  floatable: true
+  movable: true
+  show: true
+shift_auto_shape_color: 0
+shortcuts:
+  add_point_to_edge: Ctrl+Shift+P
+  close: Ctrl+W
+  create_autocontour: Ctrl+A
+  create_circle: null
+  create_line: null
+  create_linestrip: null
+  create_point: null
+  create_polygon: Ctrl+P
+  create_rectangle: Ctrl+R
+  decrease_blend:
+  - P
+  delete_file: Ctrl+Delete
+  delete_polygon: Delete
+  duplicate_polygon: Ctrl+C
+  edit_label: Ctrl+E
+  edit_polygon:
+  - Ctrl+J
+  - Escape
+  fit_width: Ctrl+Shift+F
+  fit_window: Ctrl+F
+  increase_blend:
+  - O
+  open: Ctrl+O
+  open_dir: Ctrl+D
+  open_next:
+  - Right
+  - Alt+Right
+  open_nir: Ctrl+I
+  open_prev:
+  - Left
+  - Alt+Left
+  quit: Ctrl+Q
+  save: Ctrl+S
+  save_as: Ctrl+Shift+S
+  save_to: null
+  toggle_keep_prev_mode: null
+  toggle_tracker:
+  - Ctrl+T
+  undo: Ctrl+Z
+  undo_last_point:
+  - Ctrl+Z
+  - Backspace
+  zoom_in:
+  - Ctrl++
+  - Ctrl+=
+  zoom_out: Ctrl+-
+  zoom_to_original: Ctrl+0
+show_label_text_field: true
+sort_labels: true
+store_data: false
+validate_label: exact
+version: 5.0.3
