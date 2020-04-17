@@ -17,10 +17,10 @@
 Smart-Labelme is a graphical image annotation tool inspired by <https://github.com/wkentaro/labelme>.  
 It is written in Python and uses Qt for its graphical interface.
 
-<img src="resources/AutoContour.mp4" width="70%" />   
+<img src="resources/AutoContour.gif" width="70%" />   
 <i>Auto contouring feature using OpenCV grab cut</i>
 
-<img src="resources/Tracking.mp4" width="70%" />   
+<img src="resources/Tracking.gif" width="70%" />   
 <i>Auto tracking of polygons between frames</i>
 
 
