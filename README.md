@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="labelme/icons/icon.png"><br/>labelme
+  <img src="labelme/icons/icon.png"><br/>Smart LabelMe
 </h1>
 
 <h4 align="center">
@@ -49,12 +49,13 @@ It is written in Python and uses Qt for its graphical interface.
 Download the source code onto your local system.
 Build package using python setup tool.
 Install the package on your system using pip.
+
 ```bash
 git clone https://github.com/bhavyaajani/smart-labelme
 cd smart-labelme
 python setup.py build
 pip install .
-
+```
 
 ## Usage
 
@@ -63,6 +64,7 @@ The annotations are saved as a [JSON](http://www.json.org/) file.
 
 ```bash
 smart_labelme  # just open gui
+```
 
 ### Command Line Arguments
 - `--output` specifies the location that annotations will be written to. Annotations will be stored in this directory with a name that corresponds to the image that the annotation was made on.
