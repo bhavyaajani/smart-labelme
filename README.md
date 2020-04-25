@@ -14,14 +14,15 @@
 
 ## Description
 
-Smart-Labelme is a graphical image annotation tool inspired by <https://github.com/wkentaro/labelme>.  
+Smart-Labelme is a graphical image annotation tool for various image annotation needs such as classification, semantic segmentation, polygonal rois etc.  
+It support some smart features like annotation tracking, auto contouring etc. to speed up annotation task.
 It is written in Python and uses Qt for its graphical interface.
 
-<img src="resources/AutoContour.gif" width="70%" />   
 <i>Auto contouring feature using OpenCV grab cut</i>
+<img src="resources/AutoContour.gif" width="70%" />   
 
-<img src="resources/Tracking.gif" width="70%" />   
 <i>Auto tracking of polygons between frames</i>
+<img src="resources/Tracking.gif" width="70%" />   
 
 
 ## Features
@@ -45,45 +46,14 @@ It is written in Python and uses Qt for its graphical interface.
 
 
 ## Installation
-
-There are options:
-
-- Platform agonistic installation: [Anaconda](#anaconda)
-- Platform specific installation: [Ubuntu](#ubuntu), [Windows](#windows)
-
-### Anaconda
-
-You need install [Anaconda](https://www.continuum.io/downloads), then run below:
-
+Download the source code onto your local system.
+Build package using python setup tool.
+Install the package on your system using pip.
 ```bash
-# python3
-conda create --name=smart-labelme python=3.6
-source activate smart-labelme
-pip install smart-labelme
-```
-
-### Ubuntu
-
-```bash
-# Ubuntu 14.04 / Ubuntu 16.04
-# Python3
-sudo apt-get install python3-pyqt5  # PyQt5
-sudo pip3 install smart-labelme
-```
-
-### Ubuntu 19.10+ / Debian (sid)
-
-```bash
-sudo apt-get install smart-labelme
-```
-
-### Windows
-
-Firstly, follow instruction in [Anaconda](#anaconda).
-
-```bash
-conda install pillow=4.0.0
-```
+git clone https://github.com/bhavyaajani/smart-labelme
+cd smart-labelme
+python setup.py build
+pip install .
 
 
 ## Usage
@@ -100,13 +70,6 @@ smart_labelme  # just open gui
 - Without the `--nosortlabels` flag, the program will list labels in alphabetical order. When the program is run with this flag, it will display labels in the order that they are provided.
 - Flags are assigned to an entire image. 
 - Labels are assigned to a single polygon.
-
-## Developing
-
-```bash
-git clone https://github.com/bhavyaajani/smart-labelme
-cd smart-labelme
-```
 
 ## Acknowledgement
 
